@@ -22,7 +22,7 @@ static const char * REV_DATE = "9-October-2020";
 int main(int argc, char **argv){
     int option;
     
-    while ((option = getopt(argc, argv, "ftmdai")) != -1){
+    while ((option = getopt(argc, argv, "ftmdai") != -1)){
         /* code */
         switch(option){
             case 'f' :
@@ -45,7 +45,7 @@ int main(int argc, char **argv){
                 break;
                 
             default:
-                printf("Error, please choose a valid input\n");
+                printf("Error\n");
         }
 
     }

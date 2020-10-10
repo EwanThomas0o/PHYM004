@@ -22,10 +22,10 @@ static const char * REV_DATE = "9-October-2020";
 int main(int argc, char **argv){
     int option;
     
-    while ((option = getopt(argc, argv, "ftmdai")) != -1){
+    while ((option = getopt(argc, argv, "f:t:m:d:a:i") != -1)){
         /* code */
         switch(option){
-            case 'f' :
+            case 'c' :
                 printf("You want the frobenius norm\n");
                 break;
             case 't' :
@@ -43,9 +43,7 @@ int main(int argc, char **argv){
             case 'i' :
                 printf("You want the inverse\n");
                 break;
-                
-            default:
-                printf("Error, please choose a valid input\n");
+                default: printf("Error\n");
         }
 
     }
