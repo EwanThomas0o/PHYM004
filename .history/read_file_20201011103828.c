@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 #include <string.h>
 
 #define MAX_FILE_LINE_SIZE 250
@@ -16,8 +16,8 @@ char *read_from_file(const char *filename){
         exit(1);
     }
 
-    unsigned int rows = 0;
-    unsigned int cols = 0;
+    int rows;
+    int cols;
     char line[MAX_FILE_LINE_SIZE];
 
     fseek(file, 0, SEEK_END);
@@ -38,12 +38,13 @@ char *read_from_file(const char *filename){
         return NULL;
     }
 
-    fgets(line, MAX_FILE_LINE_SIZE, file);
-    fgets(line, MAX_FILE_LINE_SIZE, file);
-    fgets(line, MAX_FILE_LINE_SIZE, file);
+    while(fgets(line, sizeof(line), file)){
+        if(line[0]=='m'){
+            sscanf(line, "%*s, %i, %i", &rows, &cols);
+        }
+    }
 
-    print("%s", line)
-    printf("There are %u rows and %u cols\n", rows, cols);
+    printf("There are %i rows and %i cols", rows, cols);
 
     fclose(file);
     return result;

@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define MAX_FILE_LINE_SIZE 250
-
-
+#include<stdio.h>
+#include<stdlib.h>
 
 char *read_from_file(const char *filename){
     
@@ -12,18 +7,13 @@ char *read_from_file(const char *filename){
     
     long int size = 0;
     if(!file){
-        fprintf(stderr, "Error: Could not open file '%s'.\n",filename);
-        exit(1);
+        fputs("File Error\n", stderr);
+        return NULL;
     }
 
-    unsigned int rows = 0;
-    unsigned int cols = 0;
-    char line[MAX_FILE_LINE_SIZE];
-
-    fseek(file, 0, SEEK_END);
+    fseek(file, 20, SEEK_END);
     size = ftell(file);
     rewind(file);
-
 
     char *result = (char*) malloc(size);
     if(!result){
@@ -38,16 +28,8 @@ char *read_from_file(const char *filename){
         return NULL;
     }
 
-    fgets(line, MAX_FILE_LINE_SIZE, file);
-    fgets(line, MAX_FILE_LINE_SIZE, file);
-    fgets(line, MAX_FILE_LINE_SIZE, file);
-
-    print("%s", line)
-    printf("There are %u rows and %u cols\n", rows, cols);
-
     fclose(file);
     return result;
-
 }
 
 int main(int argc, char **argv){
@@ -62,7 +44,7 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    printf("%s", result);
+    fputs(result, stdout);
     free(result);
 
     return 0;

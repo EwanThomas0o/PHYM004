@@ -4,7 +4,7 @@ Address: 35 Monkswell Road EX4 7AU
 License: Public Domain
 */
 
-static const char * VERSION = "0.0.3";
+static const char * VERSION = "0.0.1";
 static const char * REV_DATE = "11-October-2020";
 
 /*
@@ -20,8 +20,7 @@ static const char * REV_DATE = "11-October-2020";
 #include <math.h>
 #include <getopt.h> /* For command line input */
 
-
-double** get_matrix(const char *filename);
+double** get_matrix(char filename[]);
 
 int main(int argc, char **argv){
     int option;
@@ -56,13 +55,13 @@ int main(int argc, char **argv){
     }
 }
 
-double** get_matrix(const char *filename){
+double** get_matrix(char filename[]){
     double **array;
 
     FILE * pToFile;
     pToFile = fopen(filename, "r");
     
-    if (!pToFile)
+    if (pToFile == NULL)
     {
         printf("Error opening file\n");
         exit(1);

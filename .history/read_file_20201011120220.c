@@ -38,11 +38,11 @@ char *read_from_file(const char *filename){
         return NULL;
     }
 
-    fgets(line, MAX_FILE_LINE_SIZE, file);
-    fgets(line, MAX_FILE_LINE_SIZE, file);
-    fgets(line, MAX_FILE_LINE_SIZE, file);
-
-    print("%s", line)
+    while(fgets(line, MAX_FILE_LINE_SIZE, file)){
+        if(line[0]=='m'){
+            fscanf(line, "%*s %u %u", &rows, &cols);
+        }
+    }
     printf("There are %u rows and %u cols\n", rows, cols);
 
     fclose(file);
