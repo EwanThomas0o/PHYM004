@@ -19,7 +19,6 @@ char *read_from_file(const char *filename){
     unsigned int rows;
     unsigned int cols;
     char line[MAX_FILE_LINE_SIZE];
-    char matrixBuffer[MAX_FILE_LINE_SIZE];
 
     fseek(file, 0, SEEK_END);
     size = ftell(file);
@@ -38,6 +37,13 @@ char *read_from_file(const char *filename){
         fclose(file);
         return NULL;
     }
+
+    fgets(line, MAX_FILE_LINE_SIZE, file);
+    fgets(line, MAX_FILE_LINE_SIZE, file);
+    fgets(line, MAX_FILE_LINE_SIZE, file);
+
+    printf("%s", line);
+    printf("There are %u rows and %u cols\n", rows, cols);
 
     fclose(file);
     return result;
