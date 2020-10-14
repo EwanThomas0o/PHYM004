@@ -14,7 +14,7 @@ char *read_from_file(const char *filename){
     
     long int size = 0;
     if(!file){
-        fprintf(stderr, "Error: Could not open the file '%s'.\n",filename);
+        fprintf(stderr, "Error: Could not open file '%s'.\n",filename);
         exit(1);
     }
 
@@ -41,13 +41,13 @@ char *read_from_file(const char *filename){
 
     char *result = (char*) malloc(size);
     if(!result){
-        fprintf(stderr, "Memory Error\n");
+        fprintf("Memory Error\n", stderr);
         fclose(file);
         return NULL;
     }
 
     if(fread(result, 1, size, file) != size){
-        fprintf(stderr, "Read Error\n");
+        fprintf("Read Error\n", stderr);
         fclose(file);
         return NULL;
     }

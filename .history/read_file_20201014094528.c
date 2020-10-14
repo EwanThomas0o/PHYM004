@@ -14,7 +14,7 @@ char *read_from_file(const char *filename){
     
     long int size = 0;
     if(!file){
-        fprintf(stderr, "Error: Could not open the file '%s'.\n",filename);
+        fprintf(stderr, "Error: Could not open file '%s'.\n",filename);
         exit(1);
     }
 

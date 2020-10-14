@@ -13,8 +13,9 @@ char *read_from_file(const char *filename){
     FILE *file = fopen(filename,"r");
     
     long int size = 0;
+    
     if(!file){
-        fprintf(stderr, "Error: Could not open the file '%s'.\n",filename);
+        fprintf(stderr, "Error: the file '%s' could not be opened.\n",filename);
         exit(1);
     }
 
@@ -39,20 +40,20 @@ char *read_from_file(const char *filename){
     rewind(file);
 
 
-    char *result = (char*) malloc(size);
-    if(!result){
+    char *text = (char*) malloc(size);
+    if(!text){
         fprintf(stderr, "Memory Error\n");
         fclose(file);
         return NULL;
     }
 
-    if(fread(result, 1, size, file) != size){
+    if(fread(text, 1, size, file) != size){
         fprintf(stderr, "Read Error\n");
         fclose(file);
         return NULL;
     }
     fclose(file);
-    return result;
+    return text;
 
 }
 
@@ -62,14 +63,14 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    char *result = read_from_file(argv[1]);
+    char *matrix = read_from_file(argv[1]);
 
-    if(!result){
+    if(!text){
         return -1;
     }
 
-    /*printf("%s", result);*/
-    free(result);
+    /*printf("%s", text);*/
+    free(text);
 
     return 0;
 

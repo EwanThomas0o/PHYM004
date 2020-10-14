@@ -4,7 +4,7 @@
 
 #define MAX_FILE_LINE_SIZE 250
 #define LINE_NUMBER 3
-#define ITEMS_LINE 2
+#define ITEMS_LINE 3
 
 
 
@@ -14,24 +14,25 @@ char *read_from_file(const char *filename){
     
     long int size = 0;
     if(!file){
-        fprintf(stderr, "Error: Could not open the file '%s'.\n",filename);
+        fprintf(stderr, "Error: Could not open file '%s'.\n",filename);
         exit(1);
     }
-
     int rows;
     int cols;
     char line[MAX_FILE_LINE_SIZE];
+    char matrixBuffer[MAX_FILE_LINE_SIZE];
+    int LineNo = 0;
 
     while(fgets(line, MAX_FILE_LINE_SIZE, file)){
-        if(line[0]=='m'){
-            int DimFound = sscanf(line, "%*s %d %d", &rows, &cols);
+        if(line[0]!='#'){
+            int DimFound = sscanf(line, "%s %d %d", matrixBuffer, &rows, &cols);
+            fprintf(stdout, "%s\n", line);
             if(DimFound != ITEMS_LINE){
                 fprintf(stderr, "Uknown format: %s\n", line);
-                break;
             }
         }
     }
-    printf("There are %d rows and %d colums in this matrix\n", rows, cols); /* We will use rows and cols to malloc a matrix*/ 
+    printf("There are %d rows and %d colums\n", rows, cols);
     
 
     fseek(file, 0, SEEK_END);
@@ -41,13 +42,13 @@ char *read_from_file(const char *filename){
 
     char *result = (char*) malloc(size);
     if(!result){
-        fprintf(stderr, "Memory Error\n");
+        fputs("Memory Error\n", stderr);
         fclose(file);
         return NULL;
     }
 
     if(fread(result, 1, size, file) != size){
-        fprintf(stderr, "Read Error\n");
+        fputs("Read Error\n", stderr);
         fclose(file);
         return NULL;
     }
