@@ -29,7 +29,7 @@ static const char * REV_DATE = "11-October-2020";
 #define NO 0
 #define YES 1
 
-char* get_matrix(const char *filename);
+double** get_matrix(const char *filename);
 
 int main(int argc, char **argv){
     int option;
@@ -64,50 +64,7 @@ int main(int argc, char **argv){
     }
 }
 
-char* get_matrix(const char *filename){
+double** get_matrix(const char *filename){
+
     
-    FILE *file = fopen(filename,"r");
-    
-    long int size = 0;
-    if(!file){
-        fprintf(stderr, "Error: Could not open the file '%s'.\n",filename);
-        exit(1);
-    }
-
-    int rows;
-    int cols;
-    char line[MAX_FILE_LINE_SIZE];
-
-    while(fgets(line, MAX_FILE_LINE_SIZE, file)){
-        if(line[0]=='m'){
-            int DimFound = sscanf(line, "%*s %d %d", &rows, &cols);
-            if(DimFound != ITEMS_LINE){
-                fprintf(stderr, "Uknown format: %s\n", line);
-                break;
-            }
-        }
-    }
-    printf("There are %d rows and %d colums in this matrix\n", rows, cols); /* We will use rows and cols to malloc a matrix*/ 
-    
-
-    fseek(file, 0, SEEK_END);
-    size = ftell(file);
-    rewind(file);
-
-
-    char *result = (char*) malloc(size);
-    if(!result){
-        fprintf(stderr, "Memory Error\n");
-        fclose(file);
-        return NULL;
-    }
-
-    if(fread(result, 1, size, file) != size){
-        fprintf(stderr, "Read Error\n");
-        fclose(file);
-        return NULL;
-    }
-    fclose(file);
-    return result;
-
 }

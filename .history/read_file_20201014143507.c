@@ -34,7 +34,9 @@ double *read_from_file(const char *filename){
     }
     printf("There are %d rows and %d colums in this matrix\n", rows, cols); /* We will use rows and cols to malloc a matrix*/ 
     rewind(file);
+
     double *matrix = malloc(rows*cols*sizeof(double)); /*We now have an array that is 12 double elements long*/
+    
     while(fgets(newLine, MAX_FILE_LINE_SIZE, file)){
         if(newLine[0] != '#' && newLine[0] != 'm' && newLine[0] != 'e'){
             for(size_t i = 0; i < rows; i++){

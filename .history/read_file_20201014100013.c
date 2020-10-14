@@ -8,7 +8,7 @@
 
 
 
-double *read_from_file(const char *filename){
+char *read_from_file(const char *filename){
     
     FILE *file = fopen(filename,"r");
     
@@ -21,7 +21,6 @@ double *read_from_file(const char *filename){
     int rows;
     int cols;
     char line[MAX_FILE_LINE_SIZE];
-    char newLine[MAX_FILE_LINE_SIZE];
 
     while(fgets(line, MAX_FILE_LINE_SIZE, file)){
         if(line[0]=='m'){
@@ -33,26 +32,18 @@ double *read_from_file(const char *filename){
         }
     }
     printf("There are %d rows and %d colums in this matrix\n", rows, cols); /* We will use rows and cols to malloc a matrix*/ 
-    rewind(file);
-    double *matrix = malloc(rows*cols*sizeof(double)); /*We now have an array that is 12 double elements long*/
-    while(fgets(newLine, MAX_FILE_LINE_SIZE, file)){
-        if(newLine[0] != '#' && newLine[0] != 'm' && newLine[0] != 'e'){
-            for(size_t i = 0; i < rows; i++){
-                for (size_t j = 0; j < cols; j++){
-                    fscanf(file, "%lg", &matrix[(cols*i)+j]);
-                    fprintf(stdout, "%lg\n", matrix[cols*i+j]);
-                } 
-            }
-        }
-    }
+    printf("%s",line);
     
+    double *matrix = malloc(rows*cols*sizeof(double)); /*We now have an array that is 12 double elements long*/
+  
+
 
     fseek(file, 0, SEEK_END);
     size = ftell(file);
     rewind(file);
 
 
-    double *result = (double*) malloc(size);
+    char *result = (char*) malloc(size);
     if(!result){
         fprintf(stderr, "Memory Error\n");
         fclose(file);
@@ -65,7 +56,7 @@ double *read_from_file(const char *filename){
         return NULL;
     }
     fclose(file);
-    return matrix;
+    return result;
 
 }
 
@@ -75,15 +66,14 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    double *result = read_from_file(argv[1]);
+    char *result = read_from_file(argv[1]);
 
     if(!result){
         return -1;
     }
 
-    /*printf("%lf", result[0]);*/
+    /*printf("%s", result);*/
     free(result);
-
 
     return 0;
 

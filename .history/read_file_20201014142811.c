@@ -34,14 +34,16 @@ double *read_from_file(const char *filename){
     }
     printf("There are %d rows and %d colums in this matrix\n", rows, cols); /* We will use rows and cols to malloc a matrix*/ 
     rewind(file);
+
     double *matrix = malloc(rows*cols*sizeof(double)); /*We now have an array that is 12 double elements long*/
+    
     while(fgets(newLine, MAX_FILE_LINE_SIZE, file)){
         if(newLine[0] != '#' && newLine[0] != 'm' && newLine[0] != 'e'){
-            for(size_t i = 0; i < rows; i++){
-                for (size_t j = 0; j < cols; j++){
-                    fscanf(file, "%lg", &matrix[(cols*i)+j]);
-                    fprintf(stdout, "%lg\n", matrix[cols*i+j]);
-                } 
+            for(size_t i = 0; i < rows; ++i){
+                for (size_t j = 0; j < cols; ++j){
+                    fscanf(file, "%lf", &matrix[cols*i+j]);
+                }
+            fprintf(stdout, "%lf\n", matrix[cols*i+j]); 
             }
         }
     }
@@ -81,7 +83,7 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    /*printf("%lf", result[0]);*/
+    printf("%lf", result[0]);
     free(result);
 
 

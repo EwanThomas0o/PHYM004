@@ -29,7 +29,7 @@ static const char * REV_DATE = "11-October-2020";
 #define NO 0
 #define YES 1
 
-char* get_matrix(const char *filename);
+double** get_matrix(const char *filename);
 
 int main(int argc, char **argv){
     int option;

@@ -29,7 +29,7 @@ static const char * REV_DATE = "11-October-2020";
 #define NO 0
 #define YES 1
 
-char* get_matrix(const char *filename);
+double** get_matrix(const char *filename);
 
 int main(int argc, char **argv){
     int option;
@@ -64,8 +64,8 @@ int main(int argc, char **argv){
     }
 }
 
-char* get_matrix(const char *filename){
-    
+double** get_matrix(const char *filename){
+   
     FILE *file = fopen(filename,"r");
     
     long int size = 0;
@@ -110,4 +110,23 @@ char* get_matrix(const char *filename){
     fclose(file);
     return result;
 
+}
+
+int main(int argc, char **argv){
+    if(argc <2){
+        fputs("Need input argument\n", stderr);
+        return -1;
+    }
+
+    char *result = read_from_file(argv[1]);
+
+    if(!result){
+        return -1;
+    }
+
+    /*printf("%s", result);*/
+    free(result);
+
+    return 0;
+    
 }

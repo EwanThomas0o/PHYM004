@@ -18,23 +18,25 @@ double *read_from_file(const char *filename){
         exit(1);
     }
 
-    int rows;
-    int cols;
+    size_t rows;
+    size_t cols;
     char line[MAX_FILE_LINE_SIZE];
     char newLine[MAX_FILE_LINE_SIZE];
 
     while(fgets(line, MAX_FILE_LINE_SIZE, file)){
         if(line[0]=='m'){
-            int DimFound = sscanf(line, "%*s %d %d", &rows, &cols);
+            int DimFound = sscanf(line, "%*s %zu %zu", &rows, &cols);
             if(DimFound != ITEMS_LINE){
                 fprintf(stderr, "Uknown format: %s\n", line);
                 break;
             }
         }
     }
-    printf("There are %d rows and %d colums in this matrix\n", rows, cols); /* We will use rows and cols to malloc a matrix*/ 
+    printf("There are %zu rows and %zu colums in this matrix\n", rows, cols); /* We will use rows and cols to malloc a matrix*/ 
     rewind(file);
+
     double *matrix = malloc(rows*cols*sizeof(double)); /*We now have an array that is 12 double elements long*/
+    
     while(fgets(newLine, MAX_FILE_LINE_SIZE, file)){
         if(newLine[0] != '#' && newLine[0] != 'm' && newLine[0] != 'e'){
             for(size_t i = 0; i < rows; i++){
