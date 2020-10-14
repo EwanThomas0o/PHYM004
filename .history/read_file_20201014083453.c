@@ -17,16 +17,16 @@ char *read_from_file(const char *filename){
         fprintf(stderr, "Error: Could not open file '%s'.\n",filename);
         exit(1);
     }
-    int rows;
-    int cols;
+    char rows;
+    char cols;
     char line[MAX_FILE_LINE_SIZE];
     char matrixBuffer[MAX_FILE_LINE_SIZE];
     int LineNo = 0;
 
-    while((LineNo < LINE_NUMBER) && fgets(line, MAX_FILE_LINE_SIZE, file)){
+    while(LineNo < LINE_NUMBER && fgets(line, MAX_FILE_LINE_SIZE, file)){
         if(line[0]!='#'){
-            int DimFound = sscanf(line, "%s %d %d", matrixBuffer, &rows, &cols);
-            fprintf(stdout, "%s %d\n", line, LineNo);
+            int DimFound = sscanf(line, "%s %c %c", matrixBuffer, &rows, &cols);
+            
             if(DimFound == ITEMS_LINE){
                 LineNo++;
             }else{
@@ -34,7 +34,7 @@ char *read_from_file(const char *filename){
             }
         }
     }
-    printf("There are %d rows and %d colums\n", rows, cols);
+    printf("There are %c rows and %c colums\n", rows, cols);
     
 
     fseek(file, 0, SEEK_END);

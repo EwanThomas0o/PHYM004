@@ -17,25 +17,11 @@ char *read_from_file(const char *filename){
         fprintf(stderr, "Error: Could not open file '%s'.\n",filename);
         exit(1);
     }
-    int rows;
-    int cols;
+
+    unsigned int rows;
+    unsigned int cols;
     char line[MAX_FILE_LINE_SIZE];
     char matrixBuffer[MAX_FILE_LINE_SIZE];
-    int LineNo = 0;
-
-    while((LineNo < LINE_NUMBER) && fgets(line, MAX_FILE_LINE_SIZE, file)){
-        if(line[0]!='#'){
-            int DimFound = sscanf(line, "%s %d %d", matrixBuffer, &rows, &cols);
-            fprintf(stdout, "%s %d\n", line, LineNo);
-            if(DimFound == ITEMS_LINE){
-                LineNo++;
-            }else{
-                fprintf(stderr, "Uknown format: %s\n", line);
-            }
-        }
-    }
-    printf("There are %d rows and %d colums\n", rows, cols);
-    
 
     fseek(file, 0, SEEK_END);
     size = ftell(file);
@@ -54,6 +40,19 @@ char *read_from_file(const char *filename){
         fclose(file);
         return NULL;
     }
+    int LineNo = 0;
+    while(LineNo < LINE_NUMBER && fgets(line, MAX_FILE_LINE_SIZE, file)){
+        if(line[0]!='#'){
+            int DimFound = sscanf(line, "%s %d %d", matrixBuffer, &rows, &cols);
+            if(DimFound == ITEMS_LINE){
+                LineNo++;
+            } else{
+                fprintf(stderr, "Uknown format: %s\n", line);
+            }
+        }
+    }
+
+    printf("There are %u rows and %u colums", rows, cols);
     fclose(file);
     return result;
 
@@ -71,7 +70,7 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    /*printf("%s", result);*/
+    printf("%s", result);
     free(result);
 
     return 0;

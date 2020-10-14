@@ -23,10 +23,10 @@ char *read_from_file(const char *filename){
     char matrixBuffer[MAX_FILE_LINE_SIZE];
     int LineNo = 0;
 
-    while((LineNo < LINE_NUMBER) && fgets(line, MAX_FILE_LINE_SIZE, file)){
+    while(LineNo < LINE_NUMBER && fgets(line, MAX_FILE_LINE_SIZE, file)){
         if(line[0]!='#'){
             int DimFound = sscanf(line, "%s %d %d", matrixBuffer, &rows, &cols);
-            fprintf(stdout, "%s %d\n", line, LineNo);
+            fprintf("%s", &line);
             if(DimFound == ITEMS_LINE){
                 LineNo++;
             }else{
@@ -34,7 +34,7 @@ char *read_from_file(const char *filename){
             }
         }
     }
-    printf("There are %d rows and %d colums\n", rows, cols);
+    printf("There are %c rows and %c colums\n", rows, cols);
     
 
     fseek(file, 0, SEEK_END);
