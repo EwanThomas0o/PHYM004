@@ -6,13 +6,15 @@
 #define LINE_NUMBER 3
 #define ITEMS_LINE 2
 
-typedef struct
-{   
-    int rows;
-    int cols;
-    double *data;
-} Matrix;
+    typedef struct
+    {   
+        int rows;
+        int cols;
+        double *data;
+    } Matrix;
     
+
+
 
 Matrix *read_from_file(const char *filename){
     

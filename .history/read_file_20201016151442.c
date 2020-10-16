@@ -6,13 +6,15 @@
 #define LINE_NUMBER 3
 #define ITEMS_LINE 2
 
-typedef struct
-{   
-    int rows;
-    int cols;
-    double *data;
-} Matrix;
+    typedef struct
+    {   
+        int rows;
+        int cols;
+        double *data;
+    } Matrix;
     
+
+
 
 Matrix *read_from_file(const char *filename){
     
@@ -55,7 +57,7 @@ Matrix *read_from_file(const char *filename){
             for(size_t i = 0; i < m->rows; ++i){
                 for (size_t j = 0; j < m->cols; ++j){
                     fscanf(file, "%lg", &m->data[(m->cols*i)+j]);
-                    /*printf("%lg\n", m->data[(m->cols*i)+j]);*/
+                    printf("%lg\n", m->data[(m->cols*i)+j]);
                 } 
             }
         }
@@ -77,11 +79,14 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    for(int i = 0; i < matrix->rows; i++){
-        for(int j = 0; j < matrix->cols; j++){
+    for(int i = 0; i<matrix->rows; i++){
+        for(int j = 0; i<matrix->cols; j++){
+
             printf("%lg\n", matrix->data[(matrix->cols*i)+j]);
         }
     }
+
+    /*printf("%lf", result[0]);*/
     free(matrix);
 
 
