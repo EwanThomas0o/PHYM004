@@ -37,16 +37,22 @@ double *read_from_file(const char *filename){
     
     double *matrix = malloc(rows*cols*sizeof(double)); /*We now have an array that is 12 double elements long*/
     while(fgets(newLine, MAX_FILE_LINE_SIZE, file)){
-        if(newLine[0] != '#' && newLine[0] != 'e'){
+        if(newLine[0] != '#' && newLine[0] != 'm' && newLine[0] != 'e'){
             for(size_t i = 0; i < rows; ++i){
                 for (size_t j = 0; j < cols; ++j){
                     fscanf(file, "%lg", &matrix[(cols*i)+j]);
-                    printf("%lg\n", matrix[(cols*i)+j]);
                 } 
             }
         }
     }
+
+    for(int l = 0; l < rows; l++){
+        for(int k = 0; k < cols; k++){
+            printf("%lg", matrix[(cols*l)+k]);
+        }
+    }
     
+    rewind(file);
     fseek(file, 0, SEEK_END);
     size = ftell(file);
     rewind(file);
@@ -75,16 +81,14 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    double *matrix = read_from_file(argv[1]);
+    double *result = read_from_file(argv[1]);
 
-    if(!matrix){
+    if(!result){
         return -1;
     }
 
-    
-
     /*printf("%lf", result[0]);*/
-    free(matrix);
+    free(result);
 
 
     return 0;

@@ -46,7 +46,14 @@ double *read_from_file(const char *filename){
             }
         }
     }
+
+    for(int l = 0; l < rows; l++){
+        for(int k = 0; k < cols; k++){
+            
+        }
+    }
     
+    rewind(file);
     fseek(file, 0, SEEK_END);
     size = ftell(file);
     rewind(file);
@@ -75,16 +82,14 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    double *matrix = read_from_file(argv[1]);
+    double *result = read_from_file(argv[1]);
 
-    if(!matrix){
+    if(!result){
         return -1;
     }
 
-    
-
     /*printf("%lf", result[0]);*/
-    free(matrix);
+    free(result);
 
 
     return 0;
