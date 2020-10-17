@@ -79,23 +79,25 @@ double frobenius_norm(Matrix *matrix){
 }
 
 int main(int argc, char **argv){
-    
-        if(argc < 3){
+    int option; 
+    if(argc < 3){
         fputs("Need input argument\n", stderr);
         return -1;
     }
-    
-    int option;
 
-    Matrix *matrix = read_from_file(argv[2]);
+    Matrix *matrix = read_from_file(argv[1]);
     if(!matrix){
         return -1;
     }
         /* Checks for flags */
     while ((option = getopt(argc, argv, "ftmdai")) != -1){
+        /* code */
         switch(option){
             case 'f' :
-                printf("You want the frobenius norm: %lg\n", frobenius_norm(matrix));
+                printf("You want the frobenius norm\n");
+                printf("%lg\n", frobenius_norm(matrix));
+
+                /* For each case we will call a function that does what the user specifies */
                 break;
             case 't' :
                 printf("You want the transpose\n");
@@ -111,7 +113,8 @@ int main(int argc, char **argv){
                 break;
             case 'i' :
                 printf("You want the inverse\n");
-                break;   
+                break;
+                
             default:
                 printf("Error: Options '-%c' is not a valid input\n", optopt);
         }

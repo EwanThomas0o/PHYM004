@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <getopt.h>
 
 #define MAX_FILE_LINE_SIZE 250
 #define LINE_NUMBER 3
@@ -79,43 +78,22 @@ double frobenius_norm(Matrix *matrix){
 }
 
 int main(int argc, char **argv){
-    
-        if(argc < 3){
+    if(argc <2){
         fputs("Need input argument\n", stderr);
         return -1;
     }
-    
-    int option;
 
-    Matrix *matrix = read_from_file(argv[2]);
+    Matrix *matrix = read_from_file(argv[1]);
     if(!matrix){
         return -1;
     }
-        /* Checks for flags */
-    while ((option = getopt(argc, argv, "ftmdai")) != -1){
-        switch(option){
-            case 'f' :
-                printf("You want the frobenius norm: %lg\n", frobenius_norm(matrix));
-                break;
-            case 't' :
-                printf("You want the transpose\n");
-                break;
-            case 'm' :
-                printf("You want to multiply two matricies\n");
-                break;
-            case 'd' :
-                printf("You want the Determinant\n");
-                break;
-            case 'a' :
-                printf("You want the adjoint\n");
-                break;
-            case 'i' :
-                printf("You want the inverse\n");
-                break;   
-            default:
-                printf("Error: Options '-%c' is not a valid input\n", optopt);
+
+    for(int i = 0; i < matrix->rows; i++){
+        for(int j = 0; j < matrix->cols; j++){
+            printf("%lg\n", matrix->data[(matrix->cols*i)+j]);
         }
     }
+    printf("%lg\n", frobenius_norm(matrix));
     free(matrix);
 
 

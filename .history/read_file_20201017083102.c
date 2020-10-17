@@ -79,13 +79,12 @@ double frobenius_norm(Matrix *matrix){
 }
 
 int main(int argc, char **argv){
-    
-        if(argc < 3){
+    int option;
+
+    if(argc < 3){
         fputs("Need input argument\n", stderr);
         return -1;
     }
-    
-    int option;
 
     Matrix *matrix = read_from_file(argv[2]);
     if(!matrix){
@@ -93,9 +92,12 @@ int main(int argc, char **argv){
     }
         /* Checks for flags */
     while ((option = getopt(argc, argv, "ftmdai")) != -1){
+        /* code */
         switch(option){
             case 'f' :
-                printf("You want the frobenius norm: %lg\n", frobenius_norm(matrix));
+                printf("You want the frobenius norm\n");
+                printf("%lg\n", frobenius_norm(matrix));
+                /* For each case we will call a function that does what the user specifies */
                 break;
             case 't' :
                 printf("You want the transpose\n");
