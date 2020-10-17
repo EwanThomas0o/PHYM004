@@ -23,6 +23,7 @@ Matrix *read_from_file(const char *filename){
     
     FILE *file = fopen(filename,"r");
     
+    long int size = 0;
     if(!file){
         fprintf(stderr, "Error: Could not open the file '%s'.\n",filename);
         exit(1);
@@ -35,7 +36,7 @@ Matrix *read_from_file(const char *filename){
         if(line[0]=='m'){
             int DimFound = sscanf(line, "%*s %d %d", &m->rows, &m->cols);
             if(DimFound != ITEMS_LINE){
-                fprintf(stderr, "Unknown format: %s\n", line);
+                fprintf(stderr, "Uknown format: %s\n", line);
                 break;
             }
         }
@@ -77,17 +78,7 @@ double frobenius_norm(Matrix *matrix){
     return sqrt(sum);
 }
 
-void transpose(Matrix *matrix){
-    for(int i = 0; i < matrix->cols; i++){
-        for(int j = 0; j < matrix->rows; j++){
-            printf("%lg\t", matrix->data[matrix->cols*j+i]);
-        }
-        printf("\n");
-    }
-    
 
-
-}
 
 int main(int argc, char **argv){
     
@@ -110,7 +101,6 @@ int main(int argc, char **argv){
                 break;
             case 't' :
                 printf("You want the transpose\n");
-                transpose(matrix);
                 break;
             case 'm' :
                 printf("You want to multiply two matricies\n");

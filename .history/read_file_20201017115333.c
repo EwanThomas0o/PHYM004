@@ -78,9 +78,9 @@ double frobenius_norm(Matrix *matrix){
 }
 
 void transpose(Matrix *matrix){
-    for(int i = 0; i < matrix->cols; i++){
-        for(int j = 0; j < matrix->rows; j++){
-            printf("%lg\t", matrix->data[matrix->cols*j+i]);
+    for(int i = 0; i < matrix->rows; i++){
+        for(int j = 0; j < matrix->cols; j++){
+            printf("%lg\n", matrix->data[rows*i+j]);
         }
         printf("\n");
     }
@@ -110,7 +110,6 @@ int main(int argc, char **argv){
                 break;
             case 't' :
                 printf("You want the transpose\n");
-                transpose(matrix);
                 break;
             case 'm' :
                 printf("You want to multiply two matricies\n");

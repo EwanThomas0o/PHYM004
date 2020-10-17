@@ -80,7 +80,7 @@ double frobenius_norm(Matrix *matrix){
 void transpose(Matrix *matrix){
     for(int i = 0; i < matrix->cols; i++){
         for(int j = 0; j < matrix->rows; j++){
-            printf("%lg\t", matrix->data[matrix->cols*j+i]);
+            printf("%lg\t", matrix->data[matrix->rows*j+i]);
         }
         printf("\n");
     }
