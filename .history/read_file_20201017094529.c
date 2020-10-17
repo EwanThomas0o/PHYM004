@@ -89,7 +89,7 @@ int main(int argc, char **argv){
     
     int option;
 
-    Matrix *matrix = read_from_file(argv[argc-1]);
+    Matrix *matrix = read_from_file(argv[2]);
     if(!matrix){
         return -1;
     }

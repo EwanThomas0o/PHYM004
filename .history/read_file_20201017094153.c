@@ -78,8 +78,6 @@ double frobenius_norm(Matrix *matrix){
     return sqrt(sum);
 }
 
-
-
 int main(int argc, char **argv){
     
         if(argc < 3){
@@ -89,9 +87,15 @@ int main(int argc, char **argv){
     
     int option;
 
-    Matrix *matrix = read_from_file(argv[argc-1]);
+    Matrix *matrix = read_from_file(argv[2]);
     if(!matrix){
         return -1;
+    }
+
+    for(int i = 0; i <matrix->rows; i++){
+        for(int j = 0; j< matrix->cols; j++){
+            printf("%lg\n", matrix->data[matrix->cols*j+i]);
+        }
     }
         /* Checks for flags */
     while ((option = getopt(argc, argv, "ftmdai")) != -1){
