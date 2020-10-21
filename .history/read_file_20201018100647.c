@@ -28,7 +28,6 @@ static const char * REV_DATE = "17-October-2020";
 #define MAX_FILE_LINE_SIZE 250
 #define LINE_NUMBER 3
 #define ITEMS_LINE 2
-#define MAX_FILES 2
 
 typedef struct
 {   
@@ -110,38 +109,18 @@ void transpose(Matrix *matrix){
 
 }
 
-void product(Matrix *matrix_1, Matrix *matrix_2){
-    if(matrix_1->cols != matrix_2->rows){
-        printf("Matrices are of the wrong dimension and thus cannot be multiplied.\n");
-        return;
-    }
-    for (size_t i = 0; i < matrix_1->rows; i++){
-        
-        for (size_t j = 0; j < matrix_2->cols; j++){
-            double sum = 0.0;
-            for(size_t k = 0; k < matrix_2->rows; k++){
-                sum += (matrix_1->data[matrix_1->cols*i+k])*(matrix_2->data[matrix_2->cols*k+j]);
-            }
-            printf("%lg\t", sum);
-        } printf("\n");
-    }
-    
-    
-}
-
 int main(int argc, char **argv){
-    
-    Matrix *mats[MAX_FILES];
+
+    Matrix *matrix[2];
     
         if(argc == 3){
-            mats[0] = read_from_file(argv[argc-1]);
-        }
-
-        if(argc == 4){
-            mats[0] = read_from_file(argv[argc-2]);
-            mats[1] = read_from_file(argv[argc-1]);
-
-        }
+            matrix[1] = read_from_file(argv[argc-1]);
+            if(!matrix){
+                return -1;
+            }
+        fputs("Need input argument\n", stderr);
+        return -1;
+    }
     
     int option;
 
@@ -149,16 +128,14 @@ int main(int argc, char **argv){
     while ((option = getopt(argc, argv, "ftmdai")) != -1){
         switch(option){
             case 'f' :
-                printf("You want the frobenius norm: %lg\n", frobenius_norm(mats[0]));
+                printf("You want the frobenius norm: %lg\n", frobenius_norm(matrix[1]));
                 break;
             case 't' :
                 printf("You want the transpose\n");
-                transpose(mats[0]);
+                transpose(matrix[1]);
                 break;
             case 'm' :
                 printf("You want to multiply two matricies\n");
-                product(mats[0], mats[1]);
-
                 break;
             case 'd' :
                 printf("You want the Determinant\n");
@@ -173,6 +150,8 @@ int main(int argc, char **argv){
                 printf("Error: Options '-%c' is not a valid input\n", optopt);
         }
     }
+    free(matrix);
+
 
     return 0;
 

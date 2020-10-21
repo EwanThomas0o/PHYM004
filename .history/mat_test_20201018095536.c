@@ -15,8 +15,7 @@ static const char * REV_DATE = "18-October-2020";
 11-Oct-2020     0.0.3  Continued work on get_matrix function
 14-Oct-2020     0.0.4  Contintues work on get_matrix function
 16-Oct-2020     0.1.0  Code can now read in matrix and produce the frobenius norm
-17-Oct-2020     0.2.0  Code can now display transpose of matrix to stdout
-18-Oct-2020     0.2.1  Work started in implementing product function
+16-Oct-2020     0.2.0  Code can now display transpose of matrix to stdout
 */
 
 #include <stdio.h>

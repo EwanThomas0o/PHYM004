@@ -115,16 +115,15 @@ void product(Matrix *matrix_1, Matrix *matrix_2){
         printf("Matrices are of the wrong dimension and thus cannot be multiplied.\n");
         return;
     }
-    for (size_t i = 0; i < matrix_1->rows; i++){
-        
-        for (size_t j = 0; j < matrix_2->cols; j++){
+    for (size_t i = 0; i < matrix_1->cols; i++){
+        for (size_t j = 0; j < matrix_2->rows; j++){
             double sum = 0.0;
             for(size_t k = 0; k < matrix_2->rows; k++){
                 sum += (matrix_1->data[matrix_1->cols*i+k])*(matrix_2->data[matrix_2->cols*k+j]);
             }
             printf("%lg\t", sum);
-        } printf("\n");
-    }
+        }
+    }printf("\n");
     
     
 }

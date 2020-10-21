@@ -1,24 +1,3 @@
-/* Title: Direct Matrix Calculations
-Author: Ewan-James Thomas
-Address: 35 Monkswell Road EX4 7AU
-License: Public Domain
-*/
-
-static const char * VERSION = "0.2.0";
-static const char * REV_DATE = "17-October-2020";
-
-/*
- Date         Version  Comments
- ----         -------  --------
-09-Oct-2020     0.0.1  Build start -> taking input from command line.
-10-Oct-2020     0.0.2  Added "getopt" functionality, Trying to get_matrix...
-11-Oct-2020     0.0.3  Continued work on get_matrix function
-14-Oct-2020     0.0.4  Contintues work on get_matrix function
-16-Oct-2020     0.1.0  Code can now read in matrix and produce the frobenius norm
-17-Oct-2020     0.2.0  Code can now display transpose of matrix to stdout
-18-Oct-2020     0.2.1  Work started in implementing product function
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,7 +7,6 @@ static const char * REV_DATE = "17-October-2020";
 #define MAX_FILE_LINE_SIZE 250
 #define LINE_NUMBER 3
 #define ITEMS_LINE 2
-#define MAX_FILES 2
 
 typedef struct
 {   
@@ -110,55 +88,31 @@ void transpose(Matrix *matrix){
 
 }
 
-void product(Matrix *matrix_1, Matrix *matrix_2){
-    if(matrix_1->cols != matrix_2->rows){
-        printf("Matrices are of the wrong dimension and thus cannot be multiplied.\n");
-        return;
-    }
-    for (size_t i = 0; i < matrix_1->rows; i++){
-        
-        for (size_t j = 0; j < matrix_2->cols; j++){
-            double sum = 0.0;
-            for(size_t k = 0; k < matrix_2->rows; k++){
-                sum += (matrix_1->data[matrix_1->cols*i+k])*(matrix_2->data[matrix_2->cols*k+j]);
-            }
-            printf("%lg\t", sum);
-        } printf("\n");
-    }
-    
-    
-}
-
 int main(int argc, char **argv){
     
-    Matrix *mats[MAX_FILES];
-    
-        if(argc == 3){
-            mats[0] = read_from_file(argv[argc-1]);
-        }
-
-        if(argc == 4){
-            mats[0] = read_from_file(argv[argc-2]);
-            mats[1] = read_from_file(argv[argc-1]);
-
-        }
+        if(argc < 3){
+        fputs("Need input argument\n", stderr);
+        return -1;
+    }
     
     int option;
 
+    Matrix *matrix = read_from_file(argv[argc-1]);
+    if(!matrix){
+        return -1;
+    }
         /* Checks for flags */
     while ((option = getopt(argc, argv, "ftmdai")) != -1){
         switch(option){
             case 'f' :
-                printf("You want the frobenius norm: %lg\n", frobenius_norm(mats[0]));
+                printf("You want the frobenius norm: %lg\n", frobenius_norm(matrix));
                 break;
             case 't' :
                 printf("You want the transpose\n");
-                transpose(mats[0]);
+                transpose(matrix);
                 break;
             case 'm' :
                 printf("You want to multiply two matricies\n");
-                product(mats[0], mats[1]);
-
                 break;
             case 'd' :
                 printf("You want the Determinant\n");
@@ -173,6 +127,8 @@ int main(int argc, char **argv){
                 printf("Error: Options '-%c' is not a valid input\n", optopt);
         }
     }
+    free(matrix);
+
 
     return 0;
 
