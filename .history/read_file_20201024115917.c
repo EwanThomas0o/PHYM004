@@ -157,7 +157,7 @@ double determinant(Matrix *matrix){
                 for(int k = 0; k < rank; k++){
                     if(k!=i && j!=0){
                         submatrix->data[(submatrix->cols*q)+p] = matrix->data[matrix->cols*j+k];
-                        /*printf("%lg\n", submatrix->data[submatrix->cols*q+p]);*/
+                        printf("%lg\n", submatrix->data[submatrix->cols*q+p]);
                         if(p < (rank - 2)){
                             p++;
                         }
@@ -168,8 +168,8 @@ double determinant(Matrix *matrix){
                     }
                 }
             }
-        /*printf("%lg\n",matrix->data[i]);*/
-        det = det + c * (matrix->data[i] * determinant(submatrix));
+        print("%lg",submatrix->data[i]);
+        det = det + c * (submatrix->data[i] * determinant(submatrix));
         c *= -1;
         }
     }

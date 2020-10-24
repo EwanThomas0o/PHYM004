@@ -138,42 +138,34 @@ double determinant(Matrix *matrix){
 
     double det = 0.0;
     int  rank = matrix->rows;
-    int c = 1;
     Matrix *submatrix = (Matrix *) malloc(sizeof(Matrix));
-    submatrix->rows = rank-1; 
-    submatrix->cols = rank-1;
-    submatrix->data = (double *) malloc(submatrix->rows*submatrix->cols*sizeof(double));
+    submatrix->rows = matrix->rows-1;
+    submatrix->cols = matrix->cols-1;
+    submatrix->data = (double *) malloc(((matrix->rows)-1*(matrix->cols)-1)*(sizeof(double)));
 
     /*The base case*/
     if(rank == 2){
         det = matrix->data[0]*matrix->data[3]-matrix->data[1]*matrix->data[2];
     }
-    /* Create a submatrix that can be fed back into the function to reach the base case */
+    /* Create a submatrix that can be fed back into the function */
+
     else{
         for(int i = 0; i < rank; i++){
-            int q = 0;
-            int p = 0;
+            size_t count_1, count_2 = 0;
             for(int j =0; j < rank; j++){
                 for(int k = 0; k < rank; k++){
                     if(k!=i && j!=0){
-                        submatrix->data[(submatrix->cols*q)+p] = matrix->data[matrix->cols*j+k];
-                        /*printf("%lg\n", submatrix->data[submatrix->cols*q+p]);*/
-                        if(p < (rank - 2)){
-                            p++;
-                        }
-                        else{
-                            p = 0;
-                            q++;
-                        }
+                    submatrix->data[submatrix->cols*i+j] = matrix->data[matrix->cols*k+j];
+                    printf("%lg", submatrix->data[submatrix->cols*i+j]);
                     }
                 }
+
             }
-        /*printf("%lg\n",matrix->data[i]);*/
-        det = det + c * (matrix->data[i] * determinant(submatrix));
-        c *= -1;
         }
+
     }
-    return (det);
+    return det;
+
 }
 
 int main(int argc, char **argv){

@@ -95,7 +95,6 @@ double frobenius_norm(Matrix *matrix){
     double sum = 0.0;
     for(int i = 0; i<matrix->cols; i++){
         for(int j = 0; j < matrix->rows; j++){
-            printf("%lg",matrix->data[matrix->cols*i + j]);
             sum += pow(matrix->data[matrix->cols*i + j], 2);
         }
     }
@@ -133,47 +132,17 @@ void product(Matrix *matrix_1, Matrix *matrix_2){
 double determinant(Matrix *matrix){
     if(matrix->rows != matrix->cols){
         printf("Error: Non-square matricies do not have a determinant");
-        return -1;
-    }
+    }return -1;
 
     double det = 0.0;
     int  rank = matrix->rows;
-    int c = 1;
-    Matrix *submatrix = (Matrix *) malloc(sizeof(Matrix));
-    submatrix->rows = rank-1; 
-    submatrix->cols = rank-1;
-    submatrix->data = (double *) malloc(submatrix->rows*submatrix->cols*sizeof(double));
 
-    /*The base case*/
     if(rank == 2){
         det = matrix->data[0]*matrix->data[3]-matrix->data[1]*matrix->data[2];
+        printf("%lg",det);
+        return det;
     }
-    /* Create a submatrix that can be fed back into the function to reach the base case */
-    else{
-        for(int i = 0; i < rank; i++){
-            int q = 0;
-            int p = 0;
-            for(int j =0; j < rank; j++){
-                for(int k = 0; k < rank; k++){
-                    if(k!=i && j!=0){
-                        submatrix->data[(submatrix->cols*q)+p] = matrix->data[matrix->cols*j+k];
-                        /*printf("%lg\n", submatrix->data[submatrix->cols*q+p]);*/
-                        if(p < (rank - 2)){
-                            p++;
-                        }
-                        else{
-                            p = 0;
-                            q++;
-                        }
-                    }
-                }
-            }
-        /*printf("%lg\n",matrix->data[i]);*/
-        det = det + c * (matrix->data[i] * determinant(submatrix));
-        c *= -1;
-        }
-    }
-    return (det);
+
 }
 
 int main(int argc, char **argv){
@@ -208,7 +177,7 @@ int main(int argc, char **argv){
                 break;
             case 'd' :
                 printf("#You want the Determinant\n");
-                printf("%lg\n", determinant(mats[0]));
+                determinant(mats[0]);
                 break;
             case 'a' :
                 printf("#You want the adjoint\n");

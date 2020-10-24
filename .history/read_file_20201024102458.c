@@ -138,9 +138,8 @@ double determinant(Matrix *matrix){
 
     double det = 0.0;
     int  rank = matrix->rows;
-    int c = 1;
     Matrix *submatrix = (Matrix *) malloc(sizeof(Matrix));
-    submatrix->rows = rank-1; 
+    submatrix->rows = rank-1;
     submatrix->cols = rank-1;
     submatrix->data = (double *) malloc(submatrix->rows*submatrix->cols*sizeof(double));
 
@@ -148,32 +147,35 @@ double determinant(Matrix *matrix){
     if(rank == 2){
         det = matrix->data[0]*matrix->data[3]-matrix->data[1]*matrix->data[2];
     }
-    /* Create a submatrix that can be fed back into the function to reach the base case */
+    /* Create a submatrix that can be fed back into the function */
+
     else{
         for(int i = 0; i < rank; i++){
-            int q = 0;
-            int p = 0;
+            int q, p = 0;
             for(int j =0; j < rank; j++){
                 for(int k = 0; k < rank; k++){
                     if(k!=i && j!=0){
-                        submatrix->data[(submatrix->cols*q)+p] = matrix->data[matrix->cols*j+k];
-                        /*printf("%lg\n", submatrix->data[submatrix->cols*q+p]);*/
-                        if(p < (rank - 2)){
+                        printf("Row %d Column %d = ", j, k);
+                        printf("%lg\n", matrix->data[matrix->cols*j+k]); /*This spit out cofactor loaction and the submatrix!*/
+                        submatrix->data[(submatrix->cols*p)+q] = matrix->data[matrix->cols*j+k];
+                        printf("%lg", submatrix->data[(submatrix->cols*p)+q]);
+                        if(p < rank - 2){
                             p++;
-                        }
-                        else{
+                        }else{
                             p = 0;
                             q++;
+
                         }
                     }
                 }
+
             }
-        /*printf("%lg\n",matrix->data[i]);*/
-        det = det + c * (matrix->data[i] * determinant(submatrix));
-        c *= -1;
+        
         }
+
     }
-    return (det);
+    return det;
+
 }
 
 int main(int argc, char **argv){

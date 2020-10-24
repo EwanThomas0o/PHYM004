@@ -91,11 +91,10 @@ Matrix *read_from_file(const char *filename){
 }
 /*The frobenius norm is the sqrt of the sum of all elements squared*/
 double frobenius_norm(Matrix *matrix){
-    printf("#Version = %s, Revision date = %s\n",VERSION,REV_DATE);
+    printf("#Version = %s, Revision date = %s",VERSION,REV_DATE);
     double sum = 0.0;
     for(int i = 0; i<matrix->cols; i++){
         for(int j = 0; j < matrix->rows; j++){
-            printf("%lg",matrix->data[matrix->cols*i + j]);
             sum += pow(matrix->data[matrix->cols*i + j], 2);
         }
     }
@@ -118,7 +117,6 @@ void product(Matrix *matrix_1, Matrix *matrix_2){
         printf("Matrices are of the wrong dimension and thus cannot be multiplied.\n");
         return;
     }
-    printf("matrix %d %d\n",matrix_1->rows, matrix_2->cols );
     for (size_t i = 0; i < matrix_1->rows; i++){
         for (size_t j = 0; j < matrix_2->cols; j++){
             double sum = 0.0;
@@ -128,52 +126,6 @@ void product(Matrix *matrix_1, Matrix *matrix_2){
             printf("%lg\t", sum);
         } printf("\n");
     }
-}
-
-double determinant(Matrix *matrix){
-    if(matrix->rows != matrix->cols){
-        printf("Error: Non-square matricies do not have a determinant");
-        return -1;
-    }
-
-    double det = 0.0;
-    int  rank = matrix->rows;
-    int c = 1;
-    Matrix *submatrix = (Matrix *) malloc(sizeof(Matrix));
-    submatrix->rows = rank-1; 
-    submatrix->cols = rank-1;
-    submatrix->data = (double *) malloc(submatrix->rows*submatrix->cols*sizeof(double));
-
-    /*The base case*/
-    if(rank == 2){
-        det = matrix->data[0]*matrix->data[3]-matrix->data[1]*matrix->data[2];
-    }
-    /* Create a submatrix that can be fed back into the function to reach the base case */
-    else{
-        for(int i = 0; i < rank; i++){
-            int q = 0;
-            int p = 0;
-            for(int j =0; j < rank; j++){
-                for(int k = 0; k < rank; k++){
-                    if(k!=i && j!=0){
-                        submatrix->data[(submatrix->cols*q)+p] = matrix->data[matrix->cols*j+k];
-                        /*printf("%lg\n", submatrix->data[submatrix->cols*q+p]);*/
-                        if(p < (rank - 2)){
-                            p++;
-                        }
-                        else{
-                            p = 0;
-                            q++;
-                        }
-                    }
-                }
-            }
-        /*printf("%lg\n",matrix->data[i]);*/
-        det = det + c * (matrix->data[i] * determinant(submatrix));
-        c *= -1;
-        }
-    }
-    return (det);
 }
 
 int main(int argc, char **argv){
@@ -196,25 +148,24 @@ int main(int argc, char **argv){
     while ((option = getopt(argc, argv, "ftmdai")) != -1){
         switch(option){
             case 'f' :
-                printf("#You want the frobenius norm\n %lg\n", frobenius_norm(mats[0]));
+                printf("You want the frobenius norm: %lg\n", frobenius_norm(mats[0]));
                 break;
             case 't' :
-                printf("#You want the transpose\nmatrix %d %d\n",mats[0]->cols, mats[0]->rows);
+                printf("You want the transpose\n");
                 transpose(mats[0]);
                 break;
             case 'm' :
-                printf("#You want to multiply two matricies\n");
+                printf("You want to multiply two matricies\n");
                 product(mats[0], mats[1]);
                 break;
             case 'd' :
-                printf("#You want the Determinant\n");
-                printf("%lg\n", determinant(mats[0]));
+                printf("You want the Determinant\n");
                 break;
             case 'a' :
-                printf("#You want the adjoint\n");
+                printf("You want the adjoint\n");
                 break;
             case 'i' :
-                printf("#You want the inverse\n");
+                printf("You want the inverse\n");
                 break;   
             default:
                 printf("Error: Options '-%c' is not a valid input\n", optopt);

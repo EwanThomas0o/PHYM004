@@ -168,8 +168,7 @@ double determinant(Matrix *matrix){
                     }
                 }
             }
-        /*printf("%lg\n",matrix->data[i]);*/
-        det = det + c * (matrix->data[i] * determinant(submatrix));
+        det = det + c * (submatrix->data[i] * determinant(submatrix));
         c *= -1;
         }
     }

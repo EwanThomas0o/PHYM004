@@ -151,13 +151,12 @@ double determinant(Matrix *matrix){
     /* Create a submatrix that can be fed back into the function to reach the base case */
     else{
         for(int i = 0; i < rank; i++){
-            int q = 0;
-            int p = 0;
+            int q, p = 0;
             for(int j =0; j < rank; j++){
                 for(int k = 0; k < rank; k++){
                     if(k!=i && j!=0){
                         submatrix->data[(submatrix->cols*q)+p] = matrix->data[matrix->cols*j+k];
-                        /*printf("%lg\n", submatrix->data[submatrix->cols*q+p]);*/
+                        printf("%lg", submatrix->data[submatrix->cols*q+p]);
                         if(p < (rank - 2)){
                             p++;
                         }
@@ -168,10 +167,10 @@ double determinant(Matrix *matrix){
                     }
                 }
             }
-        /*printf("%lg\n",matrix->data[i]);*/
-        det = det + c * (matrix->data[i] * determinant(submatrix));
+        det = det + c * (submatrix->data[i] * determinant(submatrix));
         c *= -1;
         }
+
     }
     return (det);
 }

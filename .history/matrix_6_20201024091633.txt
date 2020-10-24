@@ -1,0 +1,5 @@
+#You want to multiply two matricies
+matrix 3 3
+30	70	110	
+70	174	278	
+110	278	446	

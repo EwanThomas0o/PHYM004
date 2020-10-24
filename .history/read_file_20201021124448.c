@@ -4,8 +4,8 @@ Address: 35 Monkswell Road EX4 7AU
 License: Public Domain
 */
 
-static const char * VERSION = "0.2.0";
-static const char * REV_DATE = "17-October-2020";
+static const char * VERSION = "0.3.0";
+static const char * REV_DATE = "21-October-2020";
 
 /*
  Date         Version  Comments
@@ -42,7 +42,7 @@ typedef struct
 Matrix *read_from_file(const char *filename){
     
     char line[MAX_FILE_LINE_SIZE];
-    char newLine[MAX_FILE_LINE_SIZE]; 
+    char newLine[MAX_FILE_LINE_SIZE];
     
     FILE *file = fopen(filename,"r");
     
@@ -89,23 +89,21 @@ Matrix *read_from_file(const char *filename){
     return m;
 
 }
-/*The frobenius norm is the sqrt of the sum of all elements squared*/
+
 double frobenius_norm(Matrix *matrix){
-    printf("#Version = %s, Revision date = %s\n",VERSION,REV_DATE);
-    double sum = 0.0;
+    double sum = 0;
     for(int i = 0; i<matrix->cols; i++){
         for(int j = 0; j < matrix->rows; j++){
-            printf("%lg",matrix->data[matrix->cols*i + j]);
             sum += pow(matrix->data[matrix->cols*i + j], 2);
         }
     }
     return sqrt(sum);
 }
-/*The transpose turns rows into columns and vice versa*/
+
 void transpose(Matrix *matrix){
     for(int i = 0; i < matrix->cols; i++){
         for(int j = 0; j < matrix->rows; j++){
-            printf("%lg\t", matrix->data[matrix->cols*j+i]);/*Cols*j+i goes down the column first rather than across the row*/
+            printf("%lg\t", matrix->data[matrix->cols*j+i]);
         }
         printf("\n");
     }
@@ -113,72 +111,42 @@ void transpose(Matrix *matrix){
 
 }
 
-void product(Matrix *matrix_1, Matrix *matrix_2){
+Matrix *product(Matrix *matrix_1, Matrix *matrix_2){
     if(matrix_1->cols != matrix_2->rows){
         printf("Matrices are of the wrong dimension and thus cannot be multiplied.\n");
-        return;
+        return NULL;
     }
-    printf("matrix %d %d\n",matrix_1->rows, matrix_2->cols );
+    
+    Matrix *prod;
+    prod->rows = matrix_1->cols;
+    prod->cols = matrix_2->cols;
+    prod->data = (double*)malloc(prod->rows*prod->cols*sizeof(double));
     for (size_t i = 0; i < matrix_1->rows; i++){
         for (size_t j = 0; j < matrix_2->cols; j++){
             double sum = 0.0;
             for(size_t k = 0; k < matrix_2->rows; k++){
                 sum += (matrix_1->data[matrix_1->cols*i+k])*(matrix_2->data[matrix_2->cols*k+j]);
             }
+            prod->data[prod->cols*i+j] = sum;
             printf("%lg\t", sum);
         } printf("\n");
     }
+    return prod;
 }
 
-double determinant(Matrix *matrix){
-    if(matrix->rows != matrix->cols){
-        printf("Error: Non-square matricies do not have a determinant");
-        return -1;
-    }
-
-    double det = 0.0;
-    int  rank = matrix->rows;
-    int c = 1;
-    Matrix *submatrix = (Matrix *) malloc(sizeof(Matrix));
-    submatrix->rows = rank-1; 
-    submatrix->cols = rank-1;
-    submatrix->data = (double *) malloc(submatrix->rows*submatrix->cols*sizeof(double));
-
-    /*The base case*/
-    if(rank == 2){
-        det = matrix->data[0]*matrix->data[3]-matrix->data[1]*matrix->data[2];
-    }
-    /* Create a submatrix that can be fed back into the function to reach the base case */
-    else{
-        for(int i = 0; i < rank; i++){
-            int q = 0;
-            int p = 0;
-            for(int j =0; j < rank; j++){
-                for(int k = 0; k < rank; k++){
-                    if(k!=i && j!=0){
-                        submatrix->data[(submatrix->cols*q)+p] = matrix->data[matrix->cols*j+k];
-                        /*printf("%lg\n", submatrix->data[submatrix->cols*q+p]);*/
-                        if(p < (rank - 2)){
-                            p++;
-                        }
-                        else{
-                            p = 0;
-                            q++;
-                        }
-                    }
-                }
-            }
-        /*printf("%lg\n",matrix->data[i]);*/
-        det = det + c * (matrix->data[i] * determinant(submatrix));
-        c *= -1;
+void printmatrix(Matrix *m){
+    printf("./read_file.c Version = %s, Revision Date = %s\n", VERSION, REV_DATE);
+    for(size_t i; i < m->cols; i++){
+        for(size_t j; j < m->rows; j++){
+            printf("%f\t",m->data[m->cols*i+j]);
         }
+    printf("\n");
     }
-    return (det);
 }
 
 int main(int argc, char **argv){
     
-    Matrix *mats[MAX_FILES]; /*Array of matrix pointers*/
+    Matrix *mats[MAX_FILES];
     
         if(argc == 3){
             mats[0] = read_from_file(argv[argc-1]);
@@ -192,29 +160,29 @@ int main(int argc, char **argv){
     
     int option;
 
-        /* Checks for flags from command line*/
+        /* Checks for flags */
     while ((option = getopt(argc, argv, "ftmdai")) != -1){
         switch(option){
             case 'f' :
-                printf("#You want the frobenius norm\n %lg\n", frobenius_norm(mats[0]));
+                printf("You want the frobenius norm: %lg\n", frobenius_norm(mats[0]));
                 break;
             case 't' :
-                printf("#You want the transpose\nmatrix %d %d\n",mats[0]->cols, mats[0]->rows);
+                printf("You want the transpose\n");
                 transpose(mats[0]);
                 break;
             case 'm' :
-                printf("#You want to multiply two matricies\n");
-                product(mats[0], mats[1]);
+                printf("You want to multiply two matricies\n");
+                printmatrix(product(mats[0], mats[1]));
+
                 break;
             case 'd' :
-                printf("#You want the Determinant\n");
-                printf("%lg\n", determinant(mats[0]));
+                printf("You want the Determinant\n");
                 break;
             case 'a' :
-                printf("#You want the adjoint\n");
+                printf("You want the adjoint\n");
                 break;
             case 'i' :
-                printf("#You want the inverse\n");
+                printf("You want the inverse\n");
                 break;   
             default:
                 printf("Error: Options '-%c' is not a valid input\n", optopt);
