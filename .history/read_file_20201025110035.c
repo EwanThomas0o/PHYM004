@@ -244,10 +244,6 @@ Matrix * inverse(Matrix * matrix){
     inverse->data = (double *) malloc(matrix->rows*matrix->cols*sizeof(double));
 
     double det = determinant(matrix);
-    if(det == 0){
-        printf("Error: Matrix does not have an inverse as determinant is zero.\n");
-        return NULL;
-    }
     Matrix *adj = adjoint(matrix);
 
     for(int i = 0; i < inverse->rows; i++){

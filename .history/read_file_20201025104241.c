@@ -117,7 +117,7 @@ Matrix * transpose(Matrix *matrix){
     for(int i = 0; i < matrix->cols; i++){
         for(int j = 0; j < matrix->rows; j++){
             transpose->data[transpose->cols*i+j] = matrix->data[matrix->cols*j+i];
-            printf("%lg\t", transpose->data[transpose->cols*i+j]);/* Cols*j+i goes down the column first rather than across the row*/
+            print("%lg\t", transpose->data[transpose->cols*i+j]);/* Cols*j+i goes down the column first rather than across the row*/
         }
         printf("\n");
     }
@@ -187,21 +187,20 @@ double determinant(Matrix *matrix){
     return (det);
 }
 
-Matrix * adjoint(Matrix *matrix){
+void adjoint(Matrix *matrix){
     if(matrix->rows != matrix->cols){
         printf("Error: Non-square matricies do not have an adjoint matrix");
-        return NULL;
+        return;
     }
+
 
     int rank = matrix->rows;
 
-    /*The matrix that will store the cofactors and will be passed to transpose*/
     Matrix *cofactor = (Matrix *) malloc(sizeof(Matrix));
     cofactor->rows = matrix->rows;
     cofactor ->cols = matrix->cols;
     cofactor->data = (double *) malloc(cofactor->rows*cofactor->cols*sizeof(double));
 
-    /*This matrix will store the temporary submatricies used to calculate the cofactors*/
     Matrix *submatrix = (Matrix *) malloc(sizeof(Matrix));
     submatrix->rows = matrix->rows-1;
     submatrix->cols = matrix->cols-1;
@@ -218,46 +217,23 @@ Matrix * adjoint(Matrix *matrix){
                 for(int j = 0; j < rank; j++){
                     if(j!=h && i!=g){
                         submatrix->data[(submatrix->cols*m)+n] = matrix->data[matrix->cols*i+j];
+                        /*printf("%lg\n", submatrix->data[submatrix->cols*m+n]);*/
                         if(n < (rank - 2)){
                             n++;
                         }else{
                             n=0;
                             m++;
-                        } 
+                        }
+                        /*printf("%lg\n",submatrix->data[0]); */  
                     }
                 }
             }
             cofactor->data[rank*g+h] = pow(-1, (g+h))*determinant(submatrix); /*Minus sign depends on location in the matrix*/
+            
         }
     }
-    return transpose(cofactor);
-}
-
-Matrix * inverse(Matrix * matrix){
-    if(matrix->rows != matrix->cols){
-        printf("Error: Non-square matricies do not have an inverse matrix");
-        return NULL;
-    }
-    Matrix * inverse = (Matrix *)malloc(sizeof(Matrix));
-    inverse->cols = matrix->cols;
-    inverse->rows = matrix->cols; 
-    inverse->data = (double *) malloc(matrix->rows*matrix->cols*sizeof(double));
-
-    double det = determinant(matrix);
-    if(det == 0){
-        printf("Error: Matrix does not have an inverse as determinant is zero.\n");
-        return NULL;
-    }
-    Matrix *adj = adjoint(matrix);
-
-    for(int i = 0; i < inverse->rows; i++){
-        for(int j = 0; j< inverse->cols; j++){
-            inverse->data[inverse->cols*i+j] = (1/det) * matrix->data[matrix->cols*i+j];
-            printf("%lg\t", inverse->data[inverse->cols*i+j]);
-        }
-        printf("\n");
-    }
-    return inverse;
+    transpose(cofactor);
+    return;
 }
 
 int main(int argc, char **argv){
@@ -300,7 +276,6 @@ int main(int argc, char **argv){
                 break;
             case 'i' :
                 printf("#You want the inverse\n");
-                inverse(mats[0]);
                 break;   
             default:
                 printf("Error: Options '-%c' is not a valid input\n", optopt);

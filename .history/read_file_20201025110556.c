@@ -245,8 +245,7 @@ Matrix * inverse(Matrix * matrix){
 
     double det = determinant(matrix);
     if(det == 0){
-        printf("Error: Matrix does not have an inverse as determinant is zero.\n");
-        return NULL;
+        printf("Error: Matrix does not have an inverse as determinant is zero.");
     }
     Matrix *adj = adjoint(matrix);
 

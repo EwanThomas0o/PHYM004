@@ -238,26 +238,14 @@ Matrix * inverse(Matrix * matrix){
         printf("Error: Non-square matricies do not have an inverse matrix");
         return NULL;
     }
-    Matrix * inverse = (Matrix *)malloc(sizeof(Matrix));
+    Matrix *inverse = (1/determinant(matrix))*adjoint(matrix);
+    /* Matrix * inverse = (Matrix *)malloc(sizeof(Matrix));
     inverse->cols = matrix->cols;
     inverse->rows = matrix->cols; 
-    inverse->data = (double *) malloc(matrix->rows*matrix->cols*sizeof(double));
+    inverse->data = */
 
-    double det = determinant(matrix);
-    if(det == 0){
-        printf("Error: Matrix does not have an inverse as determinant is zero.\n");
-        return NULL;
-    }
-    Matrix *adj = adjoint(matrix);
-
-    for(int i = 0; i < inverse->rows; i++){
-        for(int j = 0; j< inverse->cols; j++){
-            inverse->data[inverse->cols*i+j] = (1/det) * matrix->data[matrix->cols*i+j];
-            printf("%lg\t", inverse->data[inverse->cols*i+j]);
-        }
-        printf("\n");
-    }
     return inverse;
+
 }
 
 int main(int argc, char **argv){
@@ -300,7 +288,6 @@ int main(int argc, char **argv){
                 break;
             case 'i' :
                 printf("#You want the inverse\n");
-                inverse(mats[0]);
                 break;   
             default:
                 printf("Error: Options '-%c' is not a valid input\n", optopt);
