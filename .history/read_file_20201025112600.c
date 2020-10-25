@@ -21,7 +21,6 @@ static const char * REV_DATE = "25-October-2020";
 24-Oct-2020     0.4.0  Program can now find the determinant of a matrix
 25-Oct-2020     0.4.1  Started work on the adjoint function
 25-Oct-2020     0.4.2  Adjoint function works but needs to spit out pointer to be of use to 
-25-Oct-2020     0.5.0  All function work at a rudimentary level
 */
 
 #include <stdio.h>
@@ -253,7 +252,7 @@ Matrix * inverse(Matrix * matrix){
 
     for(int i = 0; i < inverse->rows; i++){
         for(int j = 0; j< inverse->cols; j++){
-            inverse->data[inverse->cols*i+j] = (1/det) * adj->data[adj->cols*i+j];
+            inverse->data[inverse->cols*i+j] = (1/det) * matrix->data[matrix->cols*i+j];
             printf("%lg\t", inverse->data[inverse->cols*i+j]);
         }
         printf("\n");

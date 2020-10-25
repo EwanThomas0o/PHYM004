@@ -21,7 +21,6 @@ static const char * REV_DATE = "25-October-2020";
 24-Oct-2020     0.4.0  Program can now find the determinant of a matrix
 25-Oct-2020     0.4.1  Started work on the adjoint function
 25-Oct-2020     0.4.2  Adjoint function works but needs to spit out pointer to be of use to 
-25-Oct-2020     0.5.0  All function work at a rudimentary level
 */
 
 #include <stdio.h>
