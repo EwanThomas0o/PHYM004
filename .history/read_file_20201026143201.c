@@ -224,7 +224,6 @@ Matrix * adjoint(Matrix *matrix){
         return matrix;
     }
 
-    /*Implemented by hand as rank-2 section of code below doesn't work for rank = 2*/
     if(rank == 2){
         cofactor->data[0] = matrix->data[3];
         cofactor->data[1] = -matrix->data[1];
@@ -285,7 +284,9 @@ Matrix * inverse(Matrix * matrix){
     for(int i = 0; i < inverse->rows; i++){
         for(int j = 0; j< inverse->cols; j++){
             inverse->data[inverse->cols*i+j] = (1/det) * adj->data[adj->cols*i+j];
+            printf("%lg\t", inverse->data[inverse->cols*i+j]);
         }
+        printf("\n");
     }
     return inverse;
 }
@@ -329,7 +330,7 @@ int main(int argc, char **argv){
                 print_matrix(adjoint(mats[0]));
                 break;
             case 'i' :
-                printf("#You want the inverse\n");
+                printf("#You want the inverse\n);
                 print_matrix(inverse(mats[0]));
                 break;   
             default:

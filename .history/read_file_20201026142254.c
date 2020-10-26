@@ -21,8 +21,7 @@ static const char * REV_DATE = "25-October-2020";
 24-Oct-2020     0.4.0  Program can now find the determinant of a matrix
 25-Oct-2020     0.4.1  Started work on the adjoint function
 25-Oct-2020     0.4.2  Adjoint function works but needs to spit out pointer to be of use to 
-25-Oct-2020     0.5.0  All function work at a rudimentary level.
-26-Oct-2020     1.0.0  All functions work as required with print_matrix function implemented
+25-Oct-2020     0.5.0  All function work at a rudimentary level
 */
 
 #include <stdio.h>
@@ -95,9 +94,9 @@ Matrix *read_from_file(const char *filename){
     return m;
 
 }
-/* Each function will return a matrix. To display to command line we'll need a method of printing the data and dims*/
+
 void print_matrix(Matrix* matrix){
-    printf("matrix %d %d\n", matrix->rows, matrix->cols);
+    printf("matrix %d %d", matrix->rows, matrix->cols);
     for(int i = 0; i < matrix->rows; i++){
         for(int j = 0; j< matrix->cols; j++){
             printf("%lg\t", matrix->data[matrix->cols*i+j]);
@@ -203,7 +202,7 @@ double determinant(Matrix *matrix){
         c *= -1;
         }
     }
-    return det;
+    return (det);
 }
 
 Matrix * adjoint(Matrix *matrix){
@@ -220,17 +219,12 @@ Matrix * adjoint(Matrix *matrix){
     cofactor ->cols = matrix->cols;
     cofactor->data = (double *) malloc(cofactor->rows*cofactor->cols*sizeof(double));
 
-    if(rank == 1){
-        return matrix;
-    }
-
-    /*Implemented by hand as rank-2 section of code below doesn't work for rank = 2*/
     if(rank == 2){
         cofactor->data[0] = matrix->data[3];
         cofactor->data[1] = -matrix->data[1];
         cofactor->data[2] = -matrix->data[2];
         cofactor->data[3] = matrix->data[0];
-        return cofactor;
+        return transpose(cofactor);
     }
 
     /*This matrix will store the temporary submatricies used to calculate the cofactors*/
@@ -285,7 +279,9 @@ Matrix * inverse(Matrix * matrix){
     for(int i = 0; i < inverse->rows; i++){
         for(int j = 0; j< inverse->cols; j++){
             inverse->data[inverse->cols*i+j] = (1/det) * adj->data[adj->cols*i+j];
+            printf("%lg\t", inverse->data[inverse->cols*i+j]);
         }
+        printf("\n");
     }
     return inverse;
 }
@@ -313,8 +309,8 @@ int main(int argc, char **argv){
                 printf("#You want the frobenius norm\n %lg\n", frobenius_norm(mats[0]));
                 break;
             case 't' :
-                printf("#You want the transpose\n");
-                print_matrix(transpose(mats[0]));
+                printf("#You want the transpose\nmatrix %d %d\n",mats[0]->cols, mats[0]->rows);
+                transpose(mats[0]);
                 break;
             case 'm' :
                 printf("#You want to multiply two matricies\n");
@@ -326,11 +322,11 @@ int main(int argc, char **argv){
                 break;
             case 'a' :
                 printf("#You want the adjoint\n");
-                print_matrix(adjoint(mats[0]));
+                adjoint(mats[0]);
                 break;
             case 'i' :
-                printf("#You want the inverse\n");
-                print_matrix(inverse(mats[0]));
+                printf("#You want the inverse\nmatrix %d %d\n", mats[0]->rows, mats[0]->cols);
+                inverse(mats[0]);
                 break;   
             default:
                 printf("Error: Options '-%c' is not a valid input\n", optopt);
