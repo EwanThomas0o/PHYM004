@@ -1,6 +1,0 @@
-#You want to multiply two matricies
-matrix 4 4
-30	70	110 24
-70	174	278 67	
-110	278	447 72
-21  456 65  90

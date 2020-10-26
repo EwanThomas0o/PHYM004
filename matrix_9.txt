@@ -1,5 +1,0 @@
-#You want to multiply two matricies
-matrix 3 3
-30	36	42	
-66	81	96	
-102	126	150	

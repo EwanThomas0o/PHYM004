@@ -1,5 +1,0 @@
-#You want the inverse
-#mat_test Version: 1.0.0 Revision Date: 26-October-2020
-matrix 2 2
--1.5	1.25	
-0.5	-0.25	

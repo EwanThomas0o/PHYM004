@@ -1,5 +1,0 @@
-#You want the transpose
-matrix 3 3
-1   2   3
-0   1   4
-5   6   0
