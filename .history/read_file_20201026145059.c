@@ -97,8 +97,8 @@ Matrix *read_from_file(const char *filename){
 }
 /* Each function will return a matrix. To display to command line we'll need a method of printing the data and dims*/
 void print_matrix(Matrix* matrix){
-    printf("#mat_test Version: %s Revision Date: %s\n",VERSION, REV_DATE);
-    printf("matrix %d %d\n", matrix->rows, matrix->cols);
+    printf("mat_test Version:%s Revision Date:%s\n",VERSION, REV_DATE);
+    printf("#matrix %d %d\n", matrix->rows, matrix->cols);
     for(int i = 0; i < matrix->rows; i++){
         for(int j = 0; j< matrix->cols; j++){
             printf("%lg\t", matrix->data[matrix->cols*i+j]);

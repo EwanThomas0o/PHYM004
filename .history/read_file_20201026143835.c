@@ -4,8 +4,8 @@ Address: 35 Monkswell Road EX4 7AU
 License: Public Domain
 */
 
-static const char * VERSION = "1.0.0";
-static const char * REV_DATE = "26-October-2020";
+static const char * VERSION = "0.4.1";
+static const char * REV_DATE = "25-October-2020";
 
 /*
  Date         Version  Comments
@@ -97,7 +97,6 @@ Matrix *read_from_file(const char *filename){
 }
 /* Each function will return a matrix. To display to command line we'll need a method of printing the data and dims*/
 void print_matrix(Matrix* matrix){
-    printf("#mat_test Version: %s Revision Date: %s\n",VERSION, REV_DATE);
     printf("matrix %d %d\n", matrix->rows, matrix->cols);
     for(int i = 0; i < matrix->rows; i++){
         for(int j = 0; j< matrix->cols; j++){
