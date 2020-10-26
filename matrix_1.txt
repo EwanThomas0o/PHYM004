@@ -1,0 +1,5 @@
+# ./mat_gen.o --rows 1 --cols 1 --max 10.0 --min 0.0 --file matrix_1.txt 
+# Version = 1.0.3, Revision date = 16-Oct-2019
+matrix 1 1
+9.17260468433	
+end

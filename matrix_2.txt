@@ -1,0 +1,6 @@
+# ./mat_gen.o --rows 2 --cols 2 --max 10.0 --min 0.0 --file matrix_2.txt 
+# Version = 1.0.3, Revision date = 16-Oct-2019
+matrix 2 2
+2.58302715262	1.68884746809	
+6.717173586	3.00545732631	
+end

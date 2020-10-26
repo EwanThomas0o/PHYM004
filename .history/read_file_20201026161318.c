@@ -23,7 +23,6 @@ static const char * REV_DATE = "26-October-2020";
 25-Oct-2020     0.4.2  Adjoint function works but needs to spit out pointer to be of use to 
 25-Oct-2020     0.5.0  All function work at a rudimentary level.
 26-Oct-2020     1.0.0  All functions work as required with print_matrix function implemented
-26-Oct-2020     1.0.1  All edge cases (square matrix) handled
 */
 
 #include <stdio.h>
@@ -106,7 +105,6 @@ void print_matrix(Matrix* matrix){
         }
         printf("\n");
     }
-    printf("end\n");
 }
 
 /* The frobenius norm is the sqrt of the sum of all elements squared */
@@ -277,16 +275,10 @@ Matrix * inverse(Matrix * matrix){
         printf("Error: Non-square matricies do not have an inverse matrix");
         return NULL;
     }
-
     Matrix * inverse = (Matrix *)malloc(sizeof(Matrix));
     inverse->cols = matrix->cols;
     inverse->rows = matrix->cols; 
     inverse->data = (double *) malloc(matrix->rows*matrix->cols*sizeof(double));
-
-    if(matrix->rows == 1){
-        inverse->data[0] = 1/matrix->data[0];
-        return inverse;
-    }
 
     double det = determinant(matrix);
     if(det == 0){
