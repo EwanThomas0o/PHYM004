@@ -1,0 +1,7 @@
+#mat_test Version: 1.0.1 Revision Date: 26-October-2020
+matrix 3 3
+0	0	-2.22045e-16	
+-2.22045e-15	0	-1.77636e-15	
+-3.55271e-15	-1.77636e-15	-8.88178e-16	
+end
+

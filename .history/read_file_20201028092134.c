@@ -419,60 +419,32 @@ int main(int argc, char **argv){
     while ((option = getopt(argc, argv, "ftmdair")) != -1){
         switch(option){
             case 'f' :
-                if(argc !=3){
-                    printf("Error: Incorrect number of inputs\n");
-                    break;
-                }
                 printf("#You want the frobenius norm\n %lg\n", frobenius_norm(mats[0]));
                 break;
             case 't' :
-                if(argc !=3){
-                    printf("Error: Incorrect number of inputs\n");
-                    break;
-                }
                 printf("#You want the transpose\n");
                 print_matrix(transpose(mats[0]));
                 break;
             case 'm' :
-                if(argc !=4){
-                    printf("Error: Incorrect number of inputs\n");
-                    break;
-                }
                 printf("#You want to multiply two matricies\n");
                 print_matrix(product(mats[0], mats[1]));
                 break;
             case 'd' :
-                if(argc !=3){
-                    printf("Error: Incorrect number of inputs\n");
-                    break;
-                }
                 printf("#You want the Determinant\n");
                 printf("%lg\n", determinant(mats[0]));
                 break;
             case 'a' :
-                if(argc !=3){
-                    printf("Error: Incorrect number of inputs\n");
-                    break;
-                }
                 printf("#You want the adjoint\n");
                 print_matrix(adjoint(mats[0]));
                 break;
             case 'i' :
-                if(argc !=3){
-                    printf("Error: Incorrect number of inputs\n");
-                    break;
-                }
                 gettimeofday(&start, NULL);
                 printf("#You want the inverse\n");
                 print_matrix(inverse(mats[0]));
                 gettimeofday(&stop, NULL);
-                /*printf("took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);*/
+                printf("took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
                 break;
             case 'r':
-                if(argc !=3){
-                    printf("Error: Incorrect number of inputs\n");
-                    break;
-                }
                 print_matrix(find_residues(mats[0]));
                 break;
             default:
