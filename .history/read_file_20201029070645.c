@@ -21,30 +21,17 @@ License: Public Domain
 // Usage
 //------
 //
-// The program take input from the command line. An example of the program being executed can be seen below, followed by the output.
+// As previously mentioned
 
-// $./mat_test.o -i matrix_3.txt
 
-/* #You want the inverse
-   #mat_test Version: 1.0.3 Revision Date: 28-October-2020
-   matrix 3 3
-   3.38581         1.72377         -2.15987
-  -0.940156      -1.35862          1.26912
-   0.141847        0.960833        -0.663194
-   end
-*/
-// The output of this comman can be piped into another text file (e.g mat_new.txt) and reused as input
-//
-// 
-// Flags - The flag (i.e. the desired function) is always the first argument, followed by the matrix(s) text file
-//-------
-// -f ===> The frobenius norm of the matrix
-// -t ===> the transpose of the matrix
-// -m ===> The matrix product of two matrices (must have the format -> $./mat_test.o -m <MATRIX1 TXT FILE> <MATRIX2 TXT FILE> )
-// -d ===> The determinant of the matrix (Square only)
-// -a ===> The adjoint of the matrix (Square only)
-// -i ===> The inverse of the matrix (Square only) WARNING: Matrices above 11x11 in size can take minutes to invert
-// -r ===> A function that yield the resisduals of a matrix when multiplied by its inverse and subtracted from the unity matrix (For research purposes)
+
+
+
+
+
+
+
+
 
 /*      UPDATES
  Date         Version  Comments
@@ -59,13 +46,12 @@ License: Public Domain
 21-Oct-2020     0.3.0  Code can now print the product of two matricies from command line
 24-Oct-2020     0.4.0  Program can now find the determinant of a matrix
 25-Oct-2020     0.4.1  Started work on the adjoint function
-25-Oct-2020     0.4.2  Adjoint function works but needs to spit out pointer to be of use to inverse function 
+25-Oct-2020     0.4.2  Adjoint function works but needs to spit out pointer to be of use to 
 25-Oct-2020     0.5.0  All function work at a rudimentary level.
 26-Oct-2020     1.0.0  All functions work as required with print_matrix function implemented
 26-Oct-2020     1.0.1  All edge cases (square matrix) handled
 27-Oct-2020     1.0.2  Timing functionality added
 28-Oct-2020     1.0.3  Can now calculate the residues of the inverse matrix
-29-Oct-2020     1.0.4  Free matrices in print function as this is the last place they are used
 */
 
 static const char * VERSION = "1.0.3";
@@ -165,6 +151,25 @@ void print_matrix(Matrix* matrix){
     printf("end\n");
     free(matrix);
 }
+
+/*void gsl_inv(Matrix *matrix){
+    double *invm = (double *) malloc(matrix->rows*matrix->cols*sizeof(double));
+    int s;
+    gsl_matrix_view m =gsl_matrix_view_array(matrix->data, matrix->rows, matrix->cols);
+    gsl_matrix_view inv = gsl_matrix_view_array(invm, matrix->rows, matrix->cols);
+    gsl_permutation *p = gsl_permutation_alloc(matrix->rows);
+
+    gsl_linalg_LU_decomp(&m.matrix, p, &s);
+    gsl_linalg_LU_invert (&m.matrix, p, &inv.matrix);
+
+    printf("The inverse is\n");
+    for (int i = 0; i < matrix->rows; ++i){
+        for (int j = 0; j < matrix->cols; ++j){
+            printf(j==2?"%6.3f\n":"%6.3f ",gsl_matrix_get(&inv.matrix,i,j));
+        }
+    }
+    return;
+}*/
 
 /* The frobenius norm is the sqrt of the sum of all elements squared */
 double frobenius_norm(Matrix *matrix){
@@ -322,7 +327,7 @@ Matrix * adjoint(Matrix *matrix){
             }
             cofactor->data[rank*g+h] = pow(-1, (g+h))*determinant(submatrix); /*Minus sign depends on location in the matrix*/
         }
-    }free(submatrix);
+    }
     return transpose(cofactor);
 }
 
@@ -438,11 +443,7 @@ int main(int argc, char **argv){
                     printf("Error: Incorrect number of inputs\n");
                     break;
                 }
-                gettimeofday(&start, NULL);
                 printf("#You want the frobenius norm\n %lg\n", frobenius_norm(mats[0]));
-                gettimeofday(&stop, NULL);
-
-                printf("took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
                 break;
             case 't' :
                 if(argc !=3){
@@ -451,6 +452,7 @@ int main(int argc, char **argv){
                 }
                 printf("#You want the transpose\n");
                 print_matrix(transpose(mats[0]));
+                free(transpose(mats[0]));
                 break;
             case 'm' :
                 if(argc !=4){
@@ -459,6 +461,7 @@ int main(int argc, char **argv){
                 }
                 printf("#You want to multiply two matricies\n");
                 print_matrix(product(mats[0], mats[1]));
+                free(product(mats[0], mats[1]));
                 break;
             case 'd' :
                 if(argc !=3){
@@ -475,14 +478,19 @@ int main(int argc, char **argv){
                 }
                 printf("#You want the adjoint\n");
                 print_matrix(adjoint(mats[0]));
+                free(adjoint(mats[0]));
                 break;
             case 'i' :
                 if(argc !=3){
                     printf("Error: Incorrect number of inputs\n");
                     break;
                 }
+                gettimeofday(&start, NULL);
                 printf("#You want the inverse\n");
                 print_matrix(inverse(mats[0]));
+                free(inverse(mats[0]));
+                gettimeofday(&stop, NULL);
+                /*printf("took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);*/
                 break;
             case 'r':
                 if(argc !=3){
@@ -490,6 +498,7 @@ int main(int argc, char **argv){
                     break;
                 }
                 print_matrix(find_residues(mats[0]));
+                free(find_residues(mats[0]));
                 break;
             default:
                 printf("Error: Options '-%c' is not a valid input\n", optopt);

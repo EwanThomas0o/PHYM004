@@ -21,30 +21,17 @@ License: Public Domain
 // Usage
 //------
 //
-// The program take input from the command line. An example of the program being executed can be seen below, followed by the output.
+// As previously mentioned
 
-// $./mat_test.o -i matrix_3.txt
 
-/* #You want the inverse
-   #mat_test Version: 1.0.3 Revision Date: 28-October-2020
-   matrix 3 3
-   3.38581         1.72377         -2.15987
-  -0.940156      -1.35862          1.26912
-   0.141847        0.960833        -0.663194
-   end
-*/
-// The output of this comman can be piped into another text file (e.g mat_new.txt) and reused as input
-//
-// 
-// Flags - The flag (i.e. the desired function) is always the first argument, followed by the matrix(s) text file
-//-------
-// -f ===> The frobenius norm of the matrix
-// -t ===> the transpose of the matrix
-// -m ===> The matrix product of two matrices (must have the format -> $./mat_test.o -m <MATRIX1 TXT FILE> <MATRIX2 TXT FILE> )
-// -d ===> The determinant of the matrix (Square only)
-// -a ===> The adjoint of the matrix (Square only)
-// -i ===> The inverse of the matrix (Square only) WARNING: Matrices above 11x11 in size can take minutes to invert
-// -r ===> A function that yield the resisduals of a matrix when multiplied by its inverse and subtracted from the unity matrix (For research purposes)
+
+
+
+
+
+
+
+
 
 /*      UPDATES
  Date         Version  Comments
@@ -165,6 +152,25 @@ void print_matrix(Matrix* matrix){
     printf("end\n");
     free(matrix);
 }
+
+/*void gsl_inv(Matrix *matrix){
+    double *invm = (double *) malloc(matrix->rows*matrix->cols*sizeof(double));
+    int s;
+    gsl_matrix_view m =gsl_matrix_view_array(matrix->data, matrix->rows, matrix->cols);
+    gsl_matrix_view inv = gsl_matrix_view_array(invm, matrix->rows, matrix->cols);
+    gsl_permutation *p = gsl_permutation_alloc(matrix->rows);
+
+    gsl_linalg_LU_decomp(&m.matrix, p, &s);
+    gsl_linalg_LU_invert (&m.matrix, p, &inv.matrix);
+
+    printf("The inverse is\n");
+    for (int i = 0; i < matrix->rows; ++i){
+        for (int j = 0; j < matrix->cols; ++j){
+            printf(j==2?"%6.3f\n":"%6.3f ",gsl_matrix_get(&inv.matrix,i,j));
+        }
+    }
+    return;
+}*/
 
 /* The frobenius norm is the sqrt of the sum of all elements squared */
 double frobenius_norm(Matrix *matrix){
@@ -322,7 +328,7 @@ Matrix * adjoint(Matrix *matrix){
             }
             cofactor->data[rank*g+h] = pow(-1, (g+h))*determinant(submatrix); /*Minus sign depends on location in the matrix*/
         }
-    }free(submatrix);
+    }
     return transpose(cofactor);
 }
 
